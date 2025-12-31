@@ -1,54 +1,127 @@
-# Dawn
+# Dawn Feather Starter
 
-[![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
+A modern Shopify theme starter built on top of Shopify's Dawn theme, enhanced with Tailwind CSS v4, Alpine.js, and Vite for an improved developer experience.
 
 [Getting started](#getting-started) |
-[Staying up to date with Dawn changes](#staying-up-to-date-with-dawn-changes) |
+[Tech stack](#tech-stack) |
+[Development](#development) |
+[Project structure](#project-structure) |
 [Developer tools](#developer-tools) |
-[Contributing](#contributing) |
-[Code of conduct](#code-of-conduct) |
-[Theme Store submission](#theme-store-submission) |
 [License](#license)
 
-Dawn represents a HTML-first, JavaScript-only-as-needed approach to theme development. It's Shopify's first source available theme with performance, flexibility, and [Online Store 2.0 features](https://www.shopify.com/partners/blog/shopify-online-store) built-in and acts as a reference for building Shopify themes.
+## Overview
 
-* **Web-native in its purest form:** Themes run on the [evergreen web](https://www.w3.org/2001/tag/doc/evergreen-web/). We leverage the latest web browsers to their fullest, while maintaining support for the older ones through progressive enhancement—not polyfills.
-* **Lean, fast, and reliable:** Functionality and design defaults to “no” until it meets this requirement. Code ships on quality. Themes must be built with purpose. They shouldn’t support each and every feature in Shopify.
-* **Server-rendered:** HTML must be rendered by Shopify servers using Liquid. Business logic and platform primitives such as translations and money formatting don’t belong on the client. Async and on-demand rendering of parts of the page is OK, but we do it sparingly as a progressive enhancement.
-* **Functional, not pixel-perfect:** The Web doesn’t require each page to be rendered pixel-perfect by each browser engine. Using semantic markup, progressive enhancement, and clever design, we ensure that themes remain functional regardless of the browser.
+Dawn Feather Starter combines the solid foundation of Shopify's Dawn theme with modern web development tools:
 
-You can find a more detailed version of our theme code principles in the [contribution guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md#theme-code-principles).
+- **Tailwind CSS v4** - Utility-first CSS framework for rapid UI development
+- **Alpine.js** - Lightweight JavaScript framework for interactive components
+- **Vite** - Next-generation frontend tooling for fast builds and hot module replacement
+- **Dawn Theme** - Shopify's reference theme with Online Store 2.0 features
+
+This starter maintains Dawn's HTML-first, performance-focused approach while providing modern developer tools and workflows.
+
+## Tech Stack
+
+- **Theme Base**: Shopify Dawn
+- **CSS**: Tailwind CSS v4 with Vite plugin
+- **JavaScript**: Alpine.js v3
+- **Build Tool**: Vite v7
+- **Package Manager**: pnpm
+- **Code Formatting**: Prettier with Tailwind plugin
 
 ## Getting started
-We recommend using Dawn as a starting point for theme development. [Learn more on Shopify.dev](https://shopify.dev/themes/getting-started/create).
 
-> If you're building a theme for the Shopify Theme Store, then you can use Dawn as a starting point. However, the theme that you submit needs to be [substantively different from Dawn](https://shopify.dev/themes/store/requirements#uniqueness) so that it provides added value for merchants. Learn about the [ways that you can use Dawn](https://shopify.dev/themes/tools/dawn#ways-to-use-dawn).
+### Prerequisites
 
-Please note that the main branch may include code for features not yet released. The "stable" version of Dawn is available in the theme store.
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [pnpm](https://pnpm.io/) - Fast, disk space efficient package manager
+- [Shopify CLI](https://shopify.dev/docs/themes/tools/cli) - For theme development
+
+### Installation
+
+1. Clone this repository:
+
+```sh
+git clone <your-repo-url>
+cd dawn-feather-starter
+```
+
+2. Install dependencies:
+
+```sh
+pnpm install
+```
+
+3. Start the development servers:
+
+In one terminal, start Tailwind/Vite watch mode:
+
+```sh
+pnpm dev:tailwind
+```
+
+In another terminal, start Shopify theme development:
+
+```sh
+pnpm dev:shopify
+```
+
+This will compile your Tailwind CSS and start the Shopify theme preview with hot reload.
+
+## Development
+
+### Available Scripts
+
+- `pnpm dev:tailwind` - Runs Vite in watch mode to compile Tailwind CSS
+- `pnpm dev:shopify` - Starts Shopify CLI theme development server
+- Run both scripts simultaneously for full development workflow
+
+### Tailwind CSS Setup
+
+Tailwind CSS is configured through Vite and outputs to the assets directory. The main configuration can be found in [vite.config.js](vite.config.js).
+
+### Alpine.js Usage
+
+Alpine.js is included as a dependency and can be initialized in your theme's JavaScript files. Use Alpine's directives (`x-data`, `x-show`, `x-on`, etc.) in your Liquid templates for reactive components.
+
+## Project Structure
+
+```
+dawn-feather-starter/
+├── assets/          # Compiled CSS/JS and theme assets
+├── config/          # Theme settings and configuration
+├── layout/          # Theme layout files
+├── locales/         # Translation files
+├── sections/        # Theme sections
+├── snippets/        # Reusable Liquid snippets
+├── src/             # Source files (compiled by Vite)
+├── templates/       # Page templates
+├── vite.config.js   # Vite configuration
+└── package.json     # Dependencies and scripts
+```
 
 ## Staying up to date with Dawn changes
 
-Say you're building a new theme off Dawn but you still want to be able to pull in the latest changes, you can add a remote `upstream` pointing to this Dawn repository.
+To pull in the latest Dawn theme changes:
 
-1. Navigate to your local theme folder.
-2. Verify the list of remotes and validate that you have both an `origin` and `upstream`:
-```sh
-git remote -v
-```
-3. If you don't see an `upstream`, you can add one that points to Shopify's Dawn repository:
+1. Add the Dawn repository as an upstream remote:
+
 ```sh
 git remote add upstream https://github.com/Shopify/dawn.git
 ```
-4. Pull in the latest Dawn changes into your repository:
+
+2. Fetch and merge Dawn updates:
+
 ```sh
 git fetch upstream
 git pull upstream main
 ```
 
+Note: Be careful when merging as it may conflict with your custom Tailwind and Alpine.js integrations.
+
 ## Developer tools
 
-There are a number of really useful tools that the Shopify Themes team uses during development. Dawn is already set up to work with these tools.
+This starter is set up with modern development tools to enhance your workflow.
 
 ### Shopify CLI
 
@@ -68,32 +141,46 @@ You can also run it from a terminal with the following Shopify CLI command:
 shopify theme check
 ```
 
-### Continuous Integration
+### Prettier
 
-Dawn uses [GitHub Actions](https://github.com/features/actions) to maintain the quality of the theme. [This is a starting point](https://github.com/Shopify/dawn/blob/main/.github/workflows/ci.yml) and what we suggest to use in order to ensure you're building better themes. Feel free to build off of it!
+Code formatting is handled by Prettier with the Tailwind CSS plugin for consistent class ordering.
 
-#### Shopify/lighthouse-ci-action
+### Vite
 
-We love fast websites! Which is why we created [Shopify/lighthouse-ci-action](https://github.com/Shopify/lighthouse-ci-action). This runs a series of [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) audits for the home, product and collections pages on a store to ensure code that gets added doesn't degrade storefront performance over time.
+Vite provides fast build times and an excellent developer experience. Configuration can be found in [vite.config.js](vite.config.js).
 
-#### Shopify/theme-check-action
+## Best Practices
 
-Dawn runs [Theme Check](#Theme-Check) on every commit via [Shopify/theme-check-action](https://github.com/Shopify/theme-check-action).
+### Styling with Tailwind
 
-## Contributing
+- Use Tailwind utility classes directly in your Liquid templates
+- Keep custom CSS minimal - leverage Tailwind's utilities first
+- Use Tailwind's configuration for theme consistency
 
-Want to make commerce better for everyone by contributing to Dawn? We'd love your help! Please read our [contributing guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build for Dawn.
+### JavaScript with Alpine.js
 
-## Code of conduct
+- Use Alpine.js for interactive components and state management
+- Keep JavaScript minimal and progressive - enhance, don't replace functionality
+- Alpine works well with Shopify's server-rendered approach
 
-All developers who wish to contribute through code or issues, please first read our [Code of Conduct](https://github.com/Shopify/dawn/blob/main/.github/CODE_OF_CONDUCT.md).
+### Performance
 
-## Theme Store submission
+- This starter maintains Dawn's performance-first approach
+- Tailwind CSS is compiled and optimized through Vite
+- Alpine.js is lightweight (15kb gzipped) and doesn't impact performance
 
-The [Shopify Theme Store](https://themes.shopify.com/) is the place where Shopify merchants find the themes that they'll use to showcase and support their business. As a theme partner, you can create themes for the Shopify Theme Store and reach an international audience of an ever-growing number of entrepreneurs.
+## Resources
 
-Ensure that you follow the list of [theme store requirements](https://shopify.dev/themes/store/requirements) if you're interested in becoming a [Shopify Theme Partner](https://themes.shopify.com/services/themes/guidelines) and building themes for the Shopify platform.
+- [Shopify Theme Development](https://shopify.dev/docs/themes)
+- [Dawn Documentation](https://github.com/Shopify/dawn)
+- [Tailwind CSS v4 Documentation](https://tailwindcss.com)
+- [Alpine.js Documentation](https://alpinejs.dev)
+- [Vite Documentation](https://vitejs.dev)
 
 ## License
 
-Copyright (c) 2021-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
+This project is based on Shopify's Dawn theme. Original Dawn theme: Copyright (c) 2021-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
+
+---
+
+Built with ❤️ using Dawn, Tailwind CSS, Alpine.js, and Vite
