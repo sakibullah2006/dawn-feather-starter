@@ -26,4 +26,8 @@
   a {
     @apply cursor-pointer;
   }
+
+  .container-lg {
+    @apply mx-auto w-full max-w-[1920];
+  }
 }

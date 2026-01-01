@@ -30,21 +30,9 @@
     class="{% if sticky_enabled %}sticky top-0{% endif %}"
     style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;"
   >
-    <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10">
-      <div class="flex items-center h-16 gap-4 border-current/15 {% if section.settings.show_line_separator %}border-b{% endif %}">
+    <div class="container-lg px-4 sm:px-6 lg:px-10">
+      <div class="flex items-center justify-between h-16 gap-4 border-current/15 {% if section.settings.show_line_separator %}border-b{% endif %}">
         <div class="flex items-center gap-3 min-w-30">
-          <button
-            type="button"
-            class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-current/15 hover:bg-current/5 transition"
-            @click="toggleMobile()"
-            aria-label="Open menu"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-          </button>
-
           <a href="{{ routes.root_url }}" class="flex items-center gap-2 focus:outline-none">
             {%- if settings.logo != blank -%}
               {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
@@ -84,7 +72,9 @@
                   href="{{ link.url }}"
                   class="flex items-center gap-1 px-2 py-1 rounded-md hover:bg-current/5 transition"
                 >
-                  {{ link.title }}
+                  <span class="text-[1rem] font-sans">
+                    {{ link.title }}
+                  </span>
                   {%- if has_children -%}
                     <span class="text-[10px] opacity-60">▼</span>
                   {%- endif -%}
@@ -107,52 +97,58 @@
           <div class="flex-1" aria-hidden="true"></div>
         {%- endif -%}
 
-        <div class="flex items-center justify-end gap-3 min-w-40">
-          <a
-            href="{{ routes.search_url }}"
-            class="inline-flex items-center justify-center w-10 h-10 rounded-md border border-current/15 hover:bg-current/5 transition"
+        <div class="flex items-center justify-end gap-1 min-w-40">
+          {% comment %} Search {% endcomment %}
+          <div
+            {% comment %} href="{{ routes.search_url }}" {% endcomment %}
+            class="inline-flex items-center cursor-pointer lg:min-w-36 px-2 w-10 h-10 rounded-full lg:bg-current/5  hover:bg-current/10 transition"
             aria-label="Search"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
-            </svg>
-          </a>
+            {% render 'search-logo', class: 'size-6 justify-start' %}
+            <input type="text" class="w-full focus:outline-0 ml-1 placeholder:font-medium" placeholder="Search">
+          </div>
 
+          {% comment %} Account Icon {% endcomment %}
           {%- if show_account -%}
             <a
               href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-              class="inline-flex items-center justify-center w-10 h-10 rounded-md border border-current/15 hover:bg-current/5 transition"
+              class="inline-flex items-center justify-center w-10 h-10 rounded-full border-current/15 hover:bg-current/5 transition"
               aria-label="Account"
               rel="nofollow"
             >
               {%- if section.settings.enable_customer_avatar and customer and customer.has_avatar? -%}
-                <span class="inline-flex w-7 h-7 overflow-hidden rounded-full">{{ customer | avatar }}</span>
+                <span class="inline-flex size-6 overflow-hidden rounded-full">{{ customer | avatar }}</span>
               {%- else -%}
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 12a5 5 0 100-10 5 5 0 000 10zM4 20.5c0-3.59 3.13-6.5 7-6.5s7 2.91 7 6.5" />
-                </svg>
+                {% render 'account-logo', class: 'size-6' %}
               {%- endif -%}
             </a>
           {%- endif -%}
 
+          {% comment %} WishList Icon {% endcomment %}
           <a
-            href="{{ routes.cart_url }}"
-            class="inline-flex items-center justify-center w-10 h-10 rounded-md border border-current/15 hover:bg-current/5 transition relative"
+            href="#"
+            class="inline-flex items-center justify-center size-10 rounded-full  hover:bg-current/5 border-current/15  transition relative"
             aria-label="Cart"
             id="cart-icon-bubble"
           >
             {%- if cart == empty -%}
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l1 14h12l1-10H6" />
-                <circle cx="9" cy="20" r="1.25" />
-                <circle cx="17" cy="20" r="1.25" />
-              </svg>
+              {% render 'wishlist-logo', class: 'size-6' %}
             {%- else -%}
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l1 14h12l1-10H6z" />
-                <circle cx="9" cy="20" r="1.25" />
-                <circle cx="17" cy="20" r="1.25" />
-              </svg>
+              {% render 'wishlist-logo', class: 'size-6' %}
+            {%- endif -%}
+          </a>
+
+          {% comment %} Cart Icon {% endcomment %}
+          <a
+            href="{{ routes.cart_url }}"
+            class="inline-flex items-center justify-center size-10 rounded-full  hover:bg-current/5 border-current/15  transition relative"
+            aria-label="Cart"
+            id="cart-icon-bubble"
+          >
+            {%- if cart == empty -%}
+              {% render 'cart-logo', class: 'size-6' %}
+            {%- else -%}
+              {% render 'cart-logo', class: 'size-6' %}
             {%- endif -%}
             {%- if cart != empty -%}
               <span class="absolute -top-1 -right-1 min-w-4.5 h-4.5 rounded-full bg-current text-[rgb(var(--color-background))] text-[10px] font-semibold flex items-center justify-center px-1">
@@ -171,6 +167,18 @@
                 {% render block %}
             {%- endcase -%}
           {%- endfor -%}
+
+          <button
+            type="button"
+            class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-current/5 transition"
+            @click="toggleMobile()"
+            aria-label="Open menu"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -359,7 +367,7 @@
       "step": 4,
       "unit": "px",
       "label": "Padding top",
-      "default": 16
+      "default": 0
     },
     {
       "type": "range",
@@ -369,7 +377,7 @@
       "step": 4,
       "unit": "px",
       "label": "Padding bottom",
-      "default": 16
+      "default": 0
     },
     {
       "type": "range",
