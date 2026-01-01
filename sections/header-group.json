@@ -8,16 +8,19 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
+            "text": "Opeaning Offer! 20% discount on all products",
+            "link": ""
+          }
+        },
+        "announcement-bar-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "New Year Offer! 69% discount on all products",
             "link": ""
           }
         }
       },
-      "block_order": [
-        "announcement-bar-0"
-      ]
+      "block_order": ["announcement-bar-0"]
     },
     "header": {
       "type": "header",
@@ -37,8 +40,5 @@
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["announcement-bar", "header"]
 }
