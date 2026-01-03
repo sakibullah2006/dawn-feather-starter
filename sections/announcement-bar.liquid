@@ -26,12 +26,14 @@
             </div>
           {%- else -%}
             <div
-              class="relative w-full"
+              x-cloak
               x-data="slider({ total: {{ section.blocks.size }}, autoplay: {{ section.settings.auto_rotate }}, speed: {{ section.settings.change_slides_speed }} * 1000 })"
               @mouseenter="stopAutoplay()"
               @mouseleave="if (autoplay) startAutoplay()"
+              class="relative w-full"
             >
               <button
+                x-ref="prevBtn"
                 type="button"
                 @click="prev()"
                 class="absolute -left-10 top-1/2 -translate-y-1/2 z-10 size-10 flex items-center justify-center hover:bg-current/7 rounded-full transition-opacity"
@@ -50,10 +52,11 @@
                 </svg>
               </button>
 
-              <div class="min-h-10 flex items-center justify-center">
+              <div x-ref="slides" class="min-h-10 flex items-center justify-center">
                 <div class="relative w-full">
                   {%- for block in section.blocks -%}
                     <div
+                      x-ref="slide_{{ forloop.index0 }}"
                       x-show="current === {{ forloop.index0 }}"
                       class="w-full transition-opacity duration-500"
                       :class="current === {{ forloop.index0 }} ? 'opacity-100' : 'opacity-0'"
@@ -79,6 +82,7 @@
               </div>
 
               <button
+                x-ref="nextBtn"
                 type="button"
                 @click="next()"
                 class="absolute -right-10 top-1/2 -translate-y-1/2 z-10 size-10 flex items-center justify-center  hover:bg-current/7 rounded-full transition-opacity"
