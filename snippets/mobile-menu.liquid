@@ -1,0 +1,186 @@
+{% comment %}
+  Mobile menu drawer component
+  Accepts:
+  - menu: {Object} Menu object with links
+  - show_account: {Boolean} Whether to show account link
+{% endcomment %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+<div
+  x-cloak
+  x-show="mobileOpen"
+  class="fixed inset-0 z-50 lg:hidden"
+  aria-modal="true"
+  role="dialog"
+  aria-label="Mobile navigation menu"
+>
+  <div class="absolute inset-0 bg-black/40" @click="$dispatch('close-mobile')" aria-hidden="true"></div>
+  <div class="absolute inset-y-0 right-0 w-[min(100vw,320px)] [@media(min-width:400px)]:w-full [@media(min-width:400px)]:max-w-sm sm:max-w-md">
+    <div
+      class="relative h-full bg-[rgb(var(--color-background))] text-[rgb(var(--color-foreground))] shadow-2xl flex flex-col"
+      x-transition:enter="transition ease-out duration-200"
+      x-transition:enter-start="translate-x-full opacity-0"
+      x-transition:enter-end="translate-x-0 opacity-100"
+      x-transition:leave="transition ease-in duration-150"
+      x-transition:leave-start="translate-x-0 opacity-100"
+      x-transition:leave-end="translate-x-full opacity-0"
+      x-trap="mobileOpen"
+    >
+      {% comment %} Top Bar {% endcomment %}
+      <div class="flex items-center justify-between px-3 [@media(min-width:400px)]:px-4 py-2 [@media(min-width:400px)]:py-3 sm:py-4 border-b border-current/10 flex-shrink-0">
+        <span class="text-sm [@media(min-width:400px)]:text-base font-semibold">Menu</span>
+
+        {% comment %} close button {% endcomment %}
+        <button
+          type="button"
+          class="w-10 h-10 [@media(min-width:400px)]:w-11 [@media(min-width:400px)]:h-11 inline-flex items-center justify-center rounded-md hover:bg-current/5 active:bg-current/10 transition-colors -mr-1.5 [@media(min-width:400px)]:-mr-2"
+          @click="$dispatch('close-mobile')"
+          aria-label="Close menu"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6" />
+          </svg>
+        </button>
+      </div>
+
+      {% comment %} Menu {% endcomment %}
+      <div
+        class="flex-1 overflow-y-auto px-3 [@media(min-width:400px)]:px-4 py-2 [@media(min-width:400px)]:py-3 overscroll-contain"
+        style="-webkit-overflow-scrolling: touch;"
+      >
+        <nav class="space-y-0 pb-safe" x-data="collapsible()" role="navigation" aria-label="Primary navigation">
+          {%- for link in menu.links -%}
+            {% if link.links.size > 0 %}
+              {% assign has_children = true %}
+            {% else %}
+              {% assign has_children = false %}
+            {% endif %}
+            <div class="border-b border-current/10">
+              {%- if has_children -%}
+                <button
+                  type="button"
+                  class="w-full flex items-center justify-between px-0 py-2 [@media(min-width:400px)]:py-3 sm:py-3.5 text-left text-sm font-normal hover:opacity-70 active:opacity-50 transition min-h-10 [@media(min-width:400px)]:min-h-11"
+                  @click="toggle('{{ forloop.index }}')"
+                  aria-expanded="false"
+                  :aria-expanded="isOpen('{{ forloop.index }}').toString()"
+                >
+                  <a href="{{ link.url }}" class="flex-1" @click.stop>{{ link.title }}</a>
+                  <svg
+                    class="size-4 [@media(min-width:400px)]:size-5 transition-transform duration-200"
+                    :class="isOpen('{{ forloop.index }}') ? 'rotate-45' : ''"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m7-7H5" />
+                  </svg>
+                </button>
+                <div x-show="isOpen('{{ forloop.index }}')" x-collapse>
+                  <div
+                    class="flex flex-col pb-2 [@media(min-width:400px)]:pb-3 pl-3 [@media(min-width:400px)]:pl-4"
+                    x-data="collapsible()"
+                  >
+                    {%- for child in link.links -%}
+                      {% if child.links.size > 0 %}
+                        {% assign has_grandchildren = true %}
+                      {% else %}
+                        {% assign has_grandchildren = false %}
+                      {% endif %}
+
+                      {%- if has_grandchildren -%}
+                        <div class="border-b border-current/5">
+                          <button
+                            type="button"
+                            class="w-full flex items-center justify-between py-2 [@media(min-width:400px)]:py-3 sm:py-4 text-left text-sm text-current/70 hover:text-current active:text-current transition min-h-9 [@media(min-width:400px)]:min-h-10"
+                            @click="toggle('{{ forloop.parentloop.index }}-{{ forloop.index }}')"
+                            aria-expanded="false"
+                            :aria-expanded="isOpen('{{ forloop.parentloop.index }}-{{ forloop.index }}').toString()"
+                          >
+                            <a href="{{ child.url }}" class="flex-1" @click.stop>{{ child.title }}</a>
+
+                            <svg
+                              class="w-4 h-4 transition-transform duration-200"
+                              :class="isOpen('{{ forloop.parentloop.index }}-{{ forloop.index }}') ? 'rotate-45' : ''"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              viewBox="0 0 24 24"
+                            >
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m7-7H5" />
+                            </svg>
+                          </button>
+                          <div x-show="isOpen('{{ forloop.parentloop.index }}-{{ forloop.index }}')" x-collapse>
+                            <div class="flex flex-col pb-2 pl-3 [@media(min-width:400px)]:pl-4">
+                              {%- for grandchild in child.links -%}
+                                <a
+                                  href="{{ grandchild.url }}"
+                                  class="py-2 text-sm text-current/60 hover:text-current transition"
+                                >
+                                  {{ grandchild.title }}
+                                </a>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      {%- else -%}
+                        <a
+                          href="{{ child.url }}"
+                          class="block py-2 [@media(min-width:400px)]:py-2.5 sm:py-3 text-sm text-current/70 hover:text-current active:text-current transition min-h-[36px] [@media(min-width:400px)]:min-h-[40px] flex items-center"
+                        >
+                          {{- child.title -}}
+                        </a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- else -%}
+                <a
+                  href="{{ link.url }}"
+                  class="block px-0 py-3 text-sm font-normal hover:opacity-70 transition"
+                >
+                  {{ link.title }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </nav>
+      </div>
+
+      {% comment %} Footer {% endcomment %}
+      <div class="px-3 [@media(min-width:400px)]:px-4 py-2 [@media(min-width:400px)]:py-3 sm:py-4 pb-safe border-t border-current/10 flex items-center justify-between gap-2 [@media(min-width:400px)]:gap-4 flex-shrink-0">
+        {%- if show_account -%}
+          <a
+            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="flex items-center gap-2 text-sm font-medium hover:opacity-80"
+            rel="nofollow"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 12a5 5 0 100-10 5 5 0 000 10zM4 20.5c0-3.59 3.13-6.5 7-6.5s7 2.91 7 6.5" />
+            </svg>
+            <span>
+              {%- if customer -%}
+                {{- 'customer.account_fallback' | t -}}
+              {%- else -%}
+                {{- 'customer.log_in' | t -}}
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endif -%}
+        <a href="{{ routes.cart_url }}" class="flex items-center gap-2 text-sm font-medium hover:opacity-80">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l1 14h12l1-10H6z" />
+          </svg>
+          <span>{{ 'templates.cart.cart' | t }}</span>
+          {%- if cart != empty -%}
+            <span class="ml-2 rounded-full bg-current text-[rgb(var(--color-background))] text-[10px] font-semibold px-2 py-0.5">
+              {{- cart.item_count -}}
+            </span>
+          {%- endif -%}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

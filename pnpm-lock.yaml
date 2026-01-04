@@ -8,6 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@alpinejs/collapse':
+        specifier: ^3.15.3
+        version: 3.15.3
+      '@alpinejs/focus':
+        specifier: ^3.15.3
+        version: 3.15.3
+      '@alpinejs/intersect':
+        specifier: ^3.15.3
+        version: 3.15.3
+      '@alpinejs/morph':
+        specifier: ^3.15.3
+        version: 3.15.3
       alpinejs:
         specifier: ^3.15.3
         version: 3.15.3
@@ -35,6 +47,18 @@ importers:
         version: 7.3.0(jiti@2.6.1)(lightningcss@1.30.2)
 
 packages:
+
+  '@alpinejs/collapse@3.15.3':
+    resolution: {integrity: sha512-nheS20BsFY1Eh1nyW0YNs7RMOiO/LipCTltEplbWunTcgdCeZtD7YPUim5xtbhc+0nJP4SkR7G0axRXaRf4m1g==}
+
+  '@alpinejs/focus@3.15.3':
+    resolution: {integrity: sha512-cgbQaFUUMBKurVpsYMpitvVncG4GOTRKyTF6PC7P2x8AXWrc8vUj3vtvP3ClA4ty3AkxSqoC49V/LxOS7dVXog==}
+
+  '@alpinejs/intersect@3.15.3':
+    resolution: {integrity: sha512-xzlI03dA+q83tOJHANPz+tobe8Um8wG2rmslTpolbRCrSRnwknvja++YDprn4jZZ9lFgUZz4TKUd7XOrdbvRYA==}
+
+  '@alpinejs/morph@3.15.3':
+    resolution: {integrity: sha512-mt8JZGy/Kf65Jft3uupuvgL0MBmdkGCfoNEqasEHBn5jHok8aGvKt89io9ONrVeZj8QUHV3EF/bGinvwDQzMJw==}
 
   '@esbuild/aix-ppc64@0.27.2':
     resolution: {integrity: sha512-GZMB+a0mOMZs4MpDbj8RJp4cw+w1WV5NYD6xzgvzUJ5Ek2jerwfO2eADyI6ExDSUED+1X8aMbegahsJi+8mgpw==}
@@ -476,6 +500,9 @@ packages:
       picomatch:
         optional: true
 
+  focus-trap@6.9.4:
+    resolution: {integrity: sha512-v2NTsZe2FF59Y+sDykKY+XjqZ0cPfhq/hikWVL88BqLivnNiEffAsac6rP6H45ff9wG9LL5ToiDqrLEP9GX9mw==}
+
   fraction.js@5.3.4:
     resolution: {integrity: sha512-1X1NTtiJphryn/uLQz3whtY6jK3fTqoE3ohKs0tT+Ujr1W59oopxmoEh7Lu5p6vBaPbgoM0bzveAW4Qi5RyWDQ==}
 
@@ -672,6 +699,9 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
+  tabbable@5.3.3:
+    resolution: {integrity: sha512-QD9qKY3StfbZqWOPLp0++pOrAVb/HbUi5xCc8cUo4XjP19808oaMiDzn0leBY5mCespIBM0CIZePzZjgzR83kA==}
+
   tailwindcss@4.1.18:
     resolution: {integrity: sha512-4+Z+0yiYyEtUVCScyfHCxOYP06L5Ne+JiHhY2IjR2KWMIWhJOYZKLSGZaP5HkZ8+bY0cxfzwDE5uOmzFXyIwxw==}
 
@@ -730,6 +760,17 @@ packages:
         optional: true
 
 snapshots:
+
+  '@alpinejs/collapse@3.15.3': {}
+
+  '@alpinejs/focus@3.15.3':
+    dependencies:
+      focus-trap: 6.9.4
+      tabbable: 5.3.3
+
+  '@alpinejs/intersect@3.15.3': {}
+
+  '@alpinejs/morph@3.15.3': {}
 
   '@esbuild/aix-ppc64@0.27.2':
     optional: true
@@ -1052,6 +1093,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.3
 
+  focus-trap@6.9.4:
+    dependencies:
+      tabbable: 5.3.3
+
   fraction.js@5.3.4: {}
 
   fsevents@2.3.3:
@@ -1187,6 +1232,8 @@ snapshots:
       fsevents: 2.3.3
 
   source-map-js@1.2.1: {}
+
+  tabbable@5.3.3: {}
 
   tailwindcss@4.1.18: {}
 

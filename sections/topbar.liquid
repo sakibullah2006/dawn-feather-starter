@@ -25,7 +25,11 @@
 -%}
 
 <div
-  class="min-h-10 z-10 color-{{ section.settings.color_scheme }} gradient"
+  x-data="{ isLargeScreen: window.innerWidth >= 1024 }"
+  x-init="window.addEventListener('resize', () => { isLargeScreen = window.innerWidth >= 1024 })"
+  x-show="isLargeScreen"
+  x-cloak
+  class="min-h-10  z-10 color-{{ section.settings.color_scheme }} gradient"
   style="background: rgb(var(--color-background)); color: rgb(var(--color-foreground));"
 >
   <div class="container-lg">
