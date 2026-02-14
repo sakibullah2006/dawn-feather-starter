@@ -1,5 +1,5 @@
 <div
-  class="flex justify-end flex-col-reverse gap-4 md:flex-row md:items-end max-w-[480px]"
+  class="flex justify-end flex-col-reverse gap-4 md:flex-row md:items-end"
   x-data="
     {
       activeMedia: {{ product.selected_or_first_available_variant.featured_media.id | default: product.media.first.id | default: 'null' }},
@@ -31,7 +31,7 @@
     >
       {%- for media in product.media -%}
         <li
-          class="w-[60px] h-[60px] shrink-0 md:w-full md:h-20"
+          class="w-[50px] h-[50px] shrink-0 md:w-full md:h-20"
         >
           <button
             class="w-full h-full p-0 bg-gray-100 cursor-pointer overflow-hidden rounded-lg block relative transition-all duration-200"
@@ -73,7 +73,7 @@
 
   <!-- Main Viewer (Right on Desktop) -->
   <div class="flex-1  w-full min-w-0 relative group">
-    <div class="relative w-full rounded-2xl overflow-hidden bg-gray-100  mx-auto">
+    <div class="relative w-full  overflow-hidden  bg-gray-100  mx-auto">
       <ul
         class="block p-0 m-0 list-none"
         role="list"
@@ -82,7 +82,7 @@
           <li
             x-show="activeMedia === {{ media.id }}"
             class="w-full"
-            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter="transition ease-out duration-300 "
             x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"
           >
@@ -90,14 +90,15 @@
               media: media,
               loop: block.settings.enable_video_looping,
               variant_image: false,
-              media_fit: 'object-contain'
+              media_fit: 'object-contain',
+              rounded: 'rounded-none'
             %}
           </li>
         {%- endfor -%}
       </ul>
 
       <!-- Navigation Arrows -->
-      <div class="absolute bottom-6 right-6 flex gap-3 z-10">
+      <div class="absolute bottom-6 right-6 hidden md:flex gap-3 z-10">
         <button
           @click="prev()"
           class="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-black hover:bg-gray-50 transition-colors"
@@ -113,6 +114,20 @@
           {% render 'icon-chevron', direction: 'right', class: 'w-5 h-5 -mr-0.5' %}
         </button>
       </div>
+        
+       <!-- Mobile Dots -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-2 ">
+        {%- for media in product.media -%}
+          <button
+            @click="activeMedia = {{ media.id }}"
+            class="block w-2 h-2 rounded-full transition-colors duration-200 cursor-pointer"
+            :class="activeMedia === {{ media.id }} ? 'bg-black' : 'bg-gray-300'"
+            aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+            :aria-current="activeMedia === {{ media.id }}"
+          ></button>
+        {%- endfor -%}
+      </div>
+
     </div>
   </div>
 </div>

@@ -5,18 +5,21 @@
   @param loop - {Boolean} Enable video looping (optional)
   @param variant_image - {Boolean} Whether or not media is associated with a variant
   @param media_fit - {String} Object fit class (default: 'object-cover')
+  @param rounded - {String} rounded class (default: 'rounded-lg')
 
   @example
   {% render 'product-media',
     media: media,
     loop: section.settings.enable_video_looping,
-    variant_image: true
+    variant_image: true,
+    rounded: 'rounded-lg'
   %}
 {% enddoc %}
 
 {%- if media.media_type == 'image' -%}
+    
   <img
-    class="w-full h-full {{ media_fit | default: 'object-cover' }} rounded-lg {% if variant_image %} opacity-100 {% endif %}"
+    class="w-full h-full {{ media_fit | default: 'object-cover' }} {{ rounded | default: 'rounded-lg' }}  {% if variant_image %} opacity-100 {% endif %}"
     srcset="
       {%- if media.preview_image.width >= 550 -%}{{ media.preview_image | image_url: width: 550 }} 550w,{%- endif -%}
       {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | image_url: width: 1100 }} 1100w,{%- endif -%}
